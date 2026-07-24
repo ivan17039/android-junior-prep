@@ -42,7 +42,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MojEkran("Ivan")
+            AppNavigation()
+
         }
     }
 }
