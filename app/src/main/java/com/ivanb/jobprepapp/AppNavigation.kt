@@ -1,0 +1,59 @@
+package com.ivanb.jobprepapp
+
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+
+@Composable
+fun AppNavigation() {
+    // stvara se upravitelj navigacije, pamti na kojem smo ekranu
+    val navController = rememberNavController()
+
+    // Scaffold uveden kako dio ekrana ne bi isao preko sata i datuma
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = "book_list",
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable("book_list") {
+                BookListScreen(
+                    books = sampleBooks,
+                    onBookClick = { book ->
+                        val index = sampleBooks.indexOf(book)
+                        navController.navigate("book_detail/$index/list")
+                    },
+                    onAboutClick = {
+                        navController.navigate("about")
+                    }
+                )
+            }
+            composable("book_detail/{bookIndex}/{fromScreen}") { backStackEntry ->
+                val index = backStackEntry.arguments?.getString("bookIndex")?.toIntOrNull() ?: 0
+                val fromScreen = backStackEntry.arguments?.getString("fromScreen") ?: "unknown"
+                BookDetailScreen(
+                    book = sampleBooks[index],
+                    onBack = { navController.popBackStack() },
+                    fromScreen = fromScreen,
+                )
+            }
+            composable(route="about"){
+                AboutScreen(
+                    onBack = {navController.popBackStack()}
+                )
+            }
+        }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun AppNavigationPreview() {
+    AppNavigation()
+}
