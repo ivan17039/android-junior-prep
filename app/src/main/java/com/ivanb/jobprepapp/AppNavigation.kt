@@ -12,7 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(onCloseApp: () -> Unit = {}) {
     // stvara se upravitelj navigacije, pamti na kojem smo ekranu
     val navController = rememberNavController()
 
@@ -23,6 +23,7 @@ fun AppNavigation() {
             startDestination = "book_list",
             modifier = Modifier.padding(innerPadding)
         ) {
+            // --- EKRAN 1: Popis knjiga (Glavna ruta) ---
             composable("book_list") {
                 BookListScreen(
                     books = sampleBooks,
@@ -32,9 +33,13 @@ fun AppNavigation() {
                     },
                     onAboutClick = {
                         navController.navigate("about")
+                    },
+                    onBack = {
+                        onCloseApp()
                     }
                 )
             }
+            // --- EKRAN 2: Detalji pojedine knjige ---
             composable("book_detail/{bookIndex}/{fromScreen}") { backStackEntry ->
                 val index = backStackEntry.arguments?.getString("bookIndex")?.toIntOrNull() ?: 0
                 val fromScreen = backStackEntry.arguments?.getString("fromScreen") ?: "unknown"
@@ -44,6 +49,7 @@ fun AppNavigation() {
                     fromScreen = fromScreen,
                 )
             }
+            // --- EKRAN 3: O aplikaciji ---
             composable(route="about"){
                 AboutScreen(
                     onBack = {navController.popBackStack()}

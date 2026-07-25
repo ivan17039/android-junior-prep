@@ -10,20 +10,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFrom
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,67 +43,131 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AppNavigation()
+            // Pamti trebali prikazati glavnu aplikaciju (AppNavigation) ili stari MojEkran
+            var showAppNavigation by remember { mutableStateOf(false) }
 
+            if (showAppNavigation) {
+                // Pokreće aplikaciju s knjigama i navigacijom!
+                AppNavigation(onCloseApp = { showAppNavigation = false })
+            } else {
+                // Pokreće ekran s vježbama (1-4. dan)
+                MojEkran(
+                    name = "Ivan",
+                    onOpenAppClick = { showAppNavigation = true }
+                )
+            }
         }
     }
 }
 
 @Composable
-fun MojEkran(name: String, modifier: Modifier = Modifier) {
-    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        Text(text = "Hello $name!")
-
-        ExampleColumn()
-        ExampleRow()
-        ExampleBox()
-
-
-        Text(
-            text = "Pozdrav",
-            modifier = Modifier
+fun MojEkran(
+    name: String,
+    onOpenAppClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Column(
+            modifier = modifier
+                .verticalScroll(rememberScrollState())
+                .padding(innerPadding)
                 .padding(16.dp)
-                .fillMaxWidth()
-                .background(Color.LightGray)
-        )
-        Text(
-            text = "Pozdrav",
-            modifier = Modifier
-                .background(Color.LightGray)
-                .padding(16.dp)
-                .fillMaxWidth()
-        )
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = "Profilna slika"
-        )
-        Text(
-            text = "Junior Android Developer",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.DarkGray
-        )
-        Button(
-            onClick = { /* Klik logika */ },
-            modifier = Modifier.padding(top = 12.dp)
         ) {
-            Text("Klikni me")
+            Text(
+                text = "Pozdrav, $name!",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Ovo je ekran za vježbanje osnovnih Compose komponenata.",
+                fontSize = 14.sp,
+                color = Color.Gray
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+
+            Text(text = "1. Navigacija na glavnu aplikaciju", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text(text = "Klikom na gumb ispod otvara se AppNavigation s listom knjiga.", fontSize = 12.sp)
+            Button(
+                onClick = onOpenAppClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
+                Text("POKRENI APLIKACIJU (AppNavigation) ➔", fontWeight = FontWeight.Bold)
+            }
+
+            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+
+            // Zadaci 1-4 dan
+            // Osnovni layoutovi
+            Text(text = "2. Osnovni rasporedi (Column, Row, Box)", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+
+            Text(text = "• Column (elementi jedan pod drugi):", fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
+            ExampleColumn()
+
+            Text(text = "• Row (elementi jedan pored drugog):", fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
+            ExampleRow()
+
+            Text(text = "• Box (elementi jedan preko drugog):", fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
+            ExampleBox()
+
+            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+
+            // MODIFIER I REDOSLIJED
+            Text(text = "3. Primjer utjecaja redoslijeda Modifier-a", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text(text = "Prvo padding pa background:", fontSize = 12.sp)
+            Text(
+                text = "Pozdrav",
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+                    .background(Color.LightGray)
+            )
+            Text(text = "Prvo background pa padding:", fontSize = 12.sp)
+            Text(
+                text = "Pozdrav",
+                modifier = Modifier
+                    .background(Color.LightGray)
+                    .padding(8.dp)
+                    .fillMaxWidth()
+            )
+
+            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+
+            // SLIKE I KARTICE
+            Text(text = "4. Prikaz slika, profila i vlastitih kartica", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = "Profilna slika"
+            )
+            Text(
+                text = "Junior Android Developer",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.DarkGray
+            )
+
+            Text(text = "• Vlastita komponenta PersonCard:", fontSize = 12.sp, modifier = Modifier.padding(top = 8.dp))
+            PersonCard("Ivan", 23)
+
+            Text(text = "• Row sa SpaceBetween i obojanim Box-om:", fontSize = 12.sp)
+            RowArrangment()
+
+            Text(text = "• Box s centriranim tekstom:", fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
+            BoxElement()
+
+            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+
+            // Stanja
+            Text(text = "5. Rad sa stanjem (State & remember)", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text(text = "Primjer brojača s mogućnosti uvećavanja i resetiranja:", fontSize = 12.sp)
+            Spacer(modifier = Modifier.height(4.dp))
+            SimpleCounter()
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
-
-        // AKO IMAS BookCard I sampleBooks OTKOMENTIRAJ OVO:
-        // BookCard(book = sampleBooks[0])
-
-        Text(
-            text = "Zadaci za 3. dan!!!",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.DarkGray
-        )
-        PersonCard("Ivan", 23)
-        RowArrangment()
-        BoxElement()
-        SimpleCounter()
-        Counter()
     }
 }
 
@@ -118,8 +183,8 @@ fun ExampleColumn() {
 @Composable
 fun ExampleRow() {
     Row {
-        Text("Lijevo")
-        Text("Sredina")
+        Text("Lijevo ")
+        Text("Sredina ")
         Text("Desno")
     }
 }
@@ -156,7 +221,7 @@ fun RowArrangment() {
                 .size(10.dp)
                 .background(Color.Magenta)
         )
-        Text(text = "Neki tekst")
+        Text(text = "Neki tekst na desnoj strani")
     }
 }
 
@@ -167,13 +232,12 @@ fun BoxElement() {
             .size(100.dp)
             .background(Color.Red)
     ) {
-        Text(text = "Preko", modifier = Modifier.align(Alignment.Center))
+        Text(text = "Preko", modifier = Modifier.align(Alignment.Center), color = Color.White)
     }
 }
 
 @Composable
 fun Counter() {
-    // Korištenje mutableIntStateOf + 'by' delegacije
     var count by remember { mutableStateOf(0) }
 
     Button(onClick = { count++ }) {
@@ -187,14 +251,11 @@ fun SimpleCounter(){
     Row{
         Button(onClick = {count++ }){
             Text("Kliknuto $count puta")
-
         }
-        Button(onClick = {count=0}){
+        Button(onClick = { count = 0 }) {
             Text("Reset")
         }
     }
-
-
 }
 
 @Preview(showBackground = true)

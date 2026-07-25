@@ -1,5 +1,7 @@
 package com.ivanb.jobprepapp
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,16 +15,41 @@ import androidx.compose.ui.unit.dp
 fun BookListScreen(
     books: List<Book>,
     onBookClick: (Book) -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     onAboutClick: () -> Unit
 ) {
     LazyColumn(modifier = modifier) {
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "• Klikni na bilo koju knjigu za detalje.\n" +
+                            "• Klikni na 'O aplikaciji' za informacije o autoru.\n" +
+                            "• Klikni na 'Vrati se na vježbe' za izlazak na igralište.",
+
+                )
+                Text(
+                    text = " Glavna Aplikacija: Knjižnica",
+
+                )
+
+            }
+        }
         items(books) { book ->
             BookCard(book = book, onClick = { onBookClick(book) })
         }
         item{
             Button(onClick = onAboutClick, modifier= Modifier.padding(16.dp)){
                 Text("O aplikaciji")
+            }
+        }
+        item{
+            Button(onClick = onBack, modifier= Modifier.padding(16.dp)){
+                Text("Natrag")
             }
         }
     }
