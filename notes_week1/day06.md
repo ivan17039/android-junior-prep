@@ -1,4 +1,3 @@
-Evo skraćene, čiste verzije za tvoju bilježnicu (**`day06.md`** ili **`NOTES.md`**), točno prema tvojim bilješkama:
 
 ---
 

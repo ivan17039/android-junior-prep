@@ -22,8 +22,8 @@ Prikazuje listu knjiga i omogućuje pregled detalja svake knjige.
 3. Pokreni na emulatoru ili fizičkom uređaju (Run ▶)
 
 ## Dnevnik učenja
-- [Dan 1 – Kotlin osnove i setup](notes/day01.md)
-- [Dan 2 – Klase, data class, sealed class](notes/day02.md)
-- [Dan 3 – Prvi Compose ekran](notes/day03.md)
-- [Dan 4 – LazyColumn, remember, state](notes/day04.md)
-- [Dan 5 – Navigacija između ekrana](notes/day05.md)
+- [Dan 1 – Kotlin osnove i setup](notes_week1/day01.md)
+- [Dan 2 – Klase, data class, sealed class](notes_week1/day02.md)
+- [Dan 3 – Prvi Compose ekran](notes_week1/day03.md)
+- [Dan 4 – LazyColumn, remember, state](notes_week1/day04.md)
+- [Dan 5 – Navigacija između ekrana](notes_week1/day05.md)
