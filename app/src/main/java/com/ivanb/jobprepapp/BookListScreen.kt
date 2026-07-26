@@ -1,6 +1,8 @@
 package com.ivanb.jobprepapp
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -19,6 +22,9 @@ fun BookListScreen(
     modifier: Modifier = Modifier,
     onAboutClick: () -> Unit
 ) {
+    BackHandler {
+        onBack() // Omogućuje da se vrati na MojEkran sa tipkom povratka na mobitelu
+    }
     LazyColumn(modifier = modifier) {
         item {
             Column(
@@ -42,15 +48,16 @@ fun BookListScreen(
         items(books) { book ->
             BookCard(book = book, onClick = { onBookClick(book) })
         }
-        item{
-            Button(onClick = onAboutClick, modifier= Modifier.padding(16.dp)){
-                Text("O aplikaciji")
+        item {
+            Row(modifier = Modifier.padding(16.dp)) {
+                Button(onClick = onAboutClick, modifier = Modifier.padding(16.dp)) {
+                    Text("O aplikaciji")
+                }
+                Button(onClick = onBack, modifier = Modifier.padding(16.dp)) {
+                    Text("Natrag")
+                }
             }
         }
-        item{
-            Button(onClick = onBack, modifier= Modifier.padding(16.dp)){
-                Text("Natrag")
-            }
-        }
+
     }
 }
