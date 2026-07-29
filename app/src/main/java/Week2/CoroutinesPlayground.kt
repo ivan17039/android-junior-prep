@@ -1,4 +1,4 @@
-package com.ivanb.jobprepapp
+package Week2
 
 import kotlinx.coroutines.*
 

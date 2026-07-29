@@ -1,4 +1,4 @@
-package com.ivanb.jobprepapp
+package com.ivanb.jobprepapp.Week1
 
 val sampleBooks = listOf(
     Book("Dune", "Frank Herbert", 1965),

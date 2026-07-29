@@ -1,4 +1,4 @@
-package com.ivanb.jobprepapp
+package com.ivanb.jobprepapp.Week1
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

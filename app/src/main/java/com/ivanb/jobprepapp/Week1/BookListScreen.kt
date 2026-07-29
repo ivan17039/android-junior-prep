@@ -1,4 +1,4 @@
-package com.ivanb.jobprepapp
+package com.ivanb.jobprepapp.Week1
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.unit.dp
 
 @Composable

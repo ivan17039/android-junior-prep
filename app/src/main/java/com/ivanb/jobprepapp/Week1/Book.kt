@@ -1,4 +1,4 @@
-package com.ivanb.jobprepapp
+package com.ivanb.jobprepapp.Week1
 
 data class Book(
     val title: String,

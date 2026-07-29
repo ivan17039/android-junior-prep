@@ -1,4 +1,4 @@
-package com.ivanb.jobprepapp
+package com.ivanb.jobprepapp.Week1
 
 sealed class UiState {
     object Loading : UiState()
