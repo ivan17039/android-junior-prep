@@ -4,7 +4,7 @@
 // 2. Proširi vježbu 1: dohvati vrijeme za dva grada koristeći async,
 // i dokaži (mjerenjem vremena kao u Vježbi 2) da se dohvaćaju usporedno, ne jedno pa drugo.
 
-package Week2
+package com.ivanb.jobprepapp.Week2
 
 import kotlinx.coroutines.*
 suspend fun fetchWeather(city: String): String {
