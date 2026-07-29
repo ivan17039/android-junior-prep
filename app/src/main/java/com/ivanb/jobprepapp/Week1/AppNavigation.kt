@@ -25,7 +25,6 @@ fun AppNavigation(onCloseApp: () -> Unit = {}) {
             // --- EKRAN 1: Popis knjiga (Glavna ruta) ---
             composable("book_list") {
                 BookListScreen(
-                    books = sampleBooks,
                     onBookClick = { book ->
                         val index = sampleBooks.indexOf(book)
                         navController.navigate("book_detail/$index/list")

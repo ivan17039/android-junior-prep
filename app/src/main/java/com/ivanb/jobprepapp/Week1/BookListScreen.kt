@@ -12,10 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ivanb.jobprepapp.Week2.BookListViewModel
 
 @Composable
 fun BookListScreen(
-    books: List<Book>,
+    viewModel: BookListViewModel = viewModel(),
     onBookClick: (Book) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
@@ -44,7 +46,7 @@ fun BookListScreen(
 
             }
         }
-        items(books) { book ->
+        items(viewModel.books) { book ->
             BookCard(book = book, onClick = { onBookClick(book) })
         }
         item {
