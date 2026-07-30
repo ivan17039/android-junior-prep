@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,6 +26,7 @@ fun BookListScreen(
     modifier: Modifier = Modifier,
     onAboutClick: () -> Unit
 ) {
+    val books by viewModel.books.collectAsState()
     BackHandler {
         onBack() // Omogućuje da se vrati na MojEkran sa tipkom povratka na mobitelu
     }
@@ -53,7 +56,7 @@ fun BookListScreen(
                 .padding(16.dp))
 
         }
-        items(viewModel.books) { book ->
+        items(books) { book ->
             BookCard(book = book, onClick = { onBookClick(book) })
         }
         item {

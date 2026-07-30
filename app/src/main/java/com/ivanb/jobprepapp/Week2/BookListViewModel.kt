@@ -8,17 +8,24 @@ import androidx.lifecycle.viewModelScope
 import com.ivanb.jobprepapp.Week1.Book
 import com.ivanb.jobprepapp.Week1.sampleBooks
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class BookListViewModel : ViewModel() {
-    val books: List<Book> = sampleBooks
-    val bookCount: Int get() = books.size
+
+    private val _books = MutableStateFlow<List<Book>>(emptyList())
+
+    // Ovo je dostupno Compose ekranu za čitanje
+    val books: StateFlow<List<Book>> = _books.asStateFlow()
+
+    val bookCount: Int get() = _books.value.size
 
     init {
         viewModelScope.launch {
-            delay(500)
-            Log.d("MOJ_TAG", "ViewModel podaci spremni")
-            println("ViewModel podaci spremni")
+            delay(500) // simulacija dohvaćanja
+            _books.value = sampleBooks
         }
     }
 }
