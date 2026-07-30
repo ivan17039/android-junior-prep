@@ -20,13 +20,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,24 +41,51 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ivanb.jobprepapp.R
+import com.ivanb.jobprepapp.Week2.RotationDemoScreen
+import com.ivanb.jobprepapp.Week2.BookListViewModel
+
+// Stanja ekrana radi lakše navigacije
+enum class Screen {
+    HOME,
+    APP_NAVIGATION,
+    ROTATION_DEMO
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            // Pamti trebali prikazati glavnu aplikaciju (AppNavigation) ili stari MojEkran
-            var showAppNavigation by remember { mutableStateOf(false) }
+            // Pamti koji je trenutno aktivan ekran
+            var currentScreen by rememberSaveable { mutableStateOf(Screen.HOME) }
 
-            if (showAppNavigation) {
-                // Pokreće aplikaciju s knjigama i navigacijom!
-                AppNavigation(onCloseApp = { showAppNavigation = false })
-            } else {
-                // Pokreće ekran s vježbama (1-4. dan)
-                MojEkran(
-                    name = "Ivan",
-                    onOpenAppClick = { showAppNavigation = true }
-                )
+            when (currentScreen) {
+                Screen.HOME -> {
+                    MojEkran(
+                        name = "Ivan",
+                        onOpenAppClick = { currentScreen = Screen.APP_NAVIGATION },
+                        onOpenRotationDemoClick = { currentScreen = Screen.ROTATION_DEMO }
+                    )
+                }
+                Screen.APP_NAVIGATION -> {
+                    // Pretpostavka je da AppNavigation već postoji u tvom projektu
+                    AppNavigation(onCloseApp = { currentScreen = Screen.HOME })
+                }
+                Screen.ROTATION_DEMO -> {
+                    // Ekran s prikazom razlike ViewModel vs remember pri rotaciji
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                        Column(modifier = Modifier.padding(innerPadding).padding(16.dp)) {
+                            // Gumb za povratak nazad
+                            Button(onClick = { currentScreen = Screen.HOME }) {
+                                Text("Natrag na glavni ekran")
+                            }
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            // Pozivamo tvoj RotationDemoScreen iz Week2
+                            RotationDemoScreen()
+                        }
+                    }
+                }
             }
         }
     }
@@ -65,6 +95,7 @@ class MainActivity : ComponentActivity() {
 fun MojEkran(
     name: String,
     onOpenAppClick: () -> Unit = {},
+    onOpenRotationDemoClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -87,22 +118,21 @@ fun MojEkran(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-
             Text(text = "1. Navigacija na glavnu aplikaciju", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             Text(text = "Klikom na gumb ispod otvara se AppNavigation s listom knjiga.", fontSize = 12.sp)
             Button(
                 onClick = onOpenAppClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 4.dp)
             ) {
                 Text("POKRENI APLIKACIJU (AppNavigation) ➔", fontWeight = FontWeight.Bold)
             }
 
+
             HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
 
-            // Zadaci 1-4 dan
-            // Osnovni layoutovi
+            // Zadaci 1-4 dan - Osnovni layoutovi
             Text(text = "2. Osnovni rasporedi (Column, Row, Box)", fontWeight = FontWeight.Bold, fontSize = 16.sp)
 
             Text(text = "• Column (elementi jedan pod drugi):", fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
@@ -166,6 +196,22 @@ fun MojEkran(
             Text(text = "Primjer brojača s mogućnosti uvećavanja i resetiranja:", fontSize = 12.sp)
             Spacer(modifier = Modifier.height(4.dp))
             SimpleCounter()
+
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(text = "6. Demo očuvanja stanja pri rotaciji (ViewModel vs remember):", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text(text = "Prikazuje kako se obično stanje gubi pri rotaciji mobitela, dok ViewModel čuva podatke.", fontSize = 11.sp, color = Color.Gray)
+
+            Button(
+                onClick = onOpenRotationDemoClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)) // Zeleni gumb za razliku
+            ) {
+                Text("OTVORI ROTATION DEMO ➔", fontWeight = FontWeight.Bold)
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -238,21 +284,13 @@ fun BoxElement() {
 }
 
 @Composable
-fun Counter() {
+fun SimpleCounter() {
     var count by remember { mutableStateOf(0) }
-
-    Button(onClick = { count++ }) {
-        Text("Kliknuto $count puta")
-    }
-}
-
-@Composable
-fun SimpleCounter(){
-    var count by remember {mutableStateOf(0)  }
-    Row{
-        Button(onClick = {count++ }){
+    Row {
+        Button(onClick = { count++ }) {
             Text("Kliknuto $count puta")
         }
+        Spacer(modifier = Modifier.size(8.dp))
         Button(onClick = { count = 0 }) {
             Text("Reset")
         }
