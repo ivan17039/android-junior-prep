@@ -24,7 +24,7 @@ fun BookListScreen(
     onBookClick: (Book) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    onAboutClick: () -> Unit
+    onAboutClick: () -> Unit,
 ) {
     val books by viewModel.books.collectAsState()
     BackHandler {
@@ -56,6 +56,11 @@ fun BookListScreen(
                 .padding(16.dp))
 
         }
+        item{
+            Button(onClick = {viewModel.clearBooks()}, modifier = Modifier.padding(16.dp)){
+                Text("Reset Books")
+            }
+        }
         items(books) { book ->
             BookCard(book = book, onClick = { onBookClick(book) })
         }
@@ -69,6 +74,7 @@ fun BookListScreen(
                 }
             }
         }
+
 
     }
 }

@@ -1,6 +1,7 @@
 package com.ivanb.jobprepapp.Week2
 
 import android.util.Log
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
@@ -27,6 +28,12 @@ class BookListViewModel : ViewModel() {
             delay(500) // simulacija dohvaćanja
             _books.value = sampleBooks
         }
+    }
+    // U BookListViewModel, dodaj funkciju fun clearBooks() koja postavi _books.value = emptyList().
+    // pozovi je negdje (npr. na klik nekog test-gumba) i provjeri da se UI stvarno isprazni —
+    // dokaz da promjena _books.value unutar ViewModela automatski protječe kroz collectAsState() do UI-a, bez da ručno diraš composable.
+    fun clearBooks(){
+        _books.value = emptyList()
     }
 }
 
