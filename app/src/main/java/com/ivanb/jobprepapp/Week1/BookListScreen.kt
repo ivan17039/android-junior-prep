@@ -32,6 +32,11 @@ fun BookListScreen(
     modifier: Modifier = Modifier,
     onAboutClick: () -> Unit,
 ) {
+    // 🟢 1. Gumb za povratak na glavni ekran
+    BackHandler {
+        onBack()
+    }
+
     val state by viewModel.uiState.collectAsState()
 
     when (val currentState = state) {
@@ -40,21 +45,70 @@ fun BookListScreen(
                 CircularProgressIndicator()
             }
         }
+
         is UiState.Success -> {
-            LazyColumn(modifier = modifier) {
+            LazyColumn(modifier = modifier.fillMaxSize()) {
+
+                // 🟢 2. Zaglavlje s opisom
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Text(text = "Glavna Aplikacija: Knjižnica")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "• Klikni na bilo koju knjigu za detalje.\n" +
+                                    "• Klikni na 'O aplikaciji' za informacije o autoru."
+                        )
+                    }
+                }
+
+                // 🟢 3. Prikaz ukupnog broja i Test Gumb za resetiranje
+                item {
+                    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        Text(text = "Ukupan broj knjiga je: ${currentState.data.size}")
+
+                        Button(
+                            onClick = { viewModel.clearBooks() },
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        ) {
+                            Text("Reset / Očisti knjige")
+                        }
+                    }
+                }
+
+                // 🟢 4. Lista knjiga iz currentState.data
                 items(currentState.data) { book ->
                     BookCard(book = book, onClick = { onBookClick(book) })
                 }
+
+                // 🟢 5. Gumbi na dnu (O aplikaciji & Natrag)
                 item {
-                    Button(onClick = onAboutClick, modifier = Modifier.padding(16.dp)) {
-                        Text("O aplikaciji")
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Button(onClick = onAboutClick, modifier = Modifier.weight(1f)) {
+                            Text("O aplikaciji")
+                        }
+                        Spacer(modifier = Modifier.padding(8.dp))
+                        Button(onClick = onBack, modifier = Modifier.weight(1f)) {
+                            Text("Natrag")
+                        }
                     }
                 }
             }
         }
+
         is UiState.Error -> {
             Column(
-                modifier = modifier.fillMaxSize().padding(16.dp),
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text("Greška: ${currentState.message}")
@@ -62,61 +116,15 @@ fun BookListScreen(
                 Button(onClick = { viewModel.loadBooks() }) {
                     Text("Pokušaj ponovno")
                 }
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = onBack) {
+                    Text("Natrag")
+                }
             }
         }
     }
-
-//    BackHandler {
-//        onBack() // Omogućuje da se vrati na MojEkran sa tipkom povratka na mobitelu
-//    }
-//    LazyColumn(modifier = modifier) {
-//        item {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(16.dp)
-//            ) {
-//                Text(
-//                    text = "• Klikni na bilo koju knjigu za detalje.\n" +
-//                            "• Klikni na 'O aplikaciji' za informacije o autoru.\n" +
-//                            "• Klikni na 'Vrati se na vježbe' za izlazak na igralište.",
-//
-//                )
-//                Text(
-//                    text = " Glavna Aplikacija: Knjižnica",
-//
-//                )
-//
-//            }
-//        }
-//        item{
-//            Text(text = "Ukupan broj knjiga je: ${viewModel.bookCount}", modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp))
-//
-//        }
-//        item{
-//            Button(onClick = {viewModel.clearBooks()}, modifier = Modifier.padding(16.dp)){
-//                Text("Reset Books")
-//            }
-//        }
-//        items(books) { book ->
-//            BookCard(book = book, onClick = { onBookClick(book) })
-//        }
-//        item {
-//            Row(modifier = Modifier.padding(16.dp)) {
-//                Button(onClick = onAboutClick, modifier = Modifier.padding(16.dp)) {
-//                    Text("O aplikaciji")
-//                }
-//                Button(onClick = onBack, modifier = Modifier.padding(16.dp)) {
-//                    Text("Natrag")
-//                }
-//            }
-//        }
-//
-//
-//    }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun BookListScreenPreview() {

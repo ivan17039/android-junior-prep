@@ -36,6 +36,7 @@ class BookListViewModel : ViewModel() {
 //    fun clearBooks(){
 //        _books.value = emptyList()
 //    }
+
     private val simulateError = false // promijeni na true da testiraš Error stanje
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
@@ -50,11 +51,15 @@ class BookListViewModel : ViewModel() {
             _uiState.value = UiState.Loading
             delay(1000)
             if (simulateError) {
-                _uiState.value = UiState.Error("Nešto je pošlo po zlu")
+                _uiState.value = UiState.Error("Nema internetske veze")
             } else {
                 _uiState.value = UiState.Success(sampleBooks)
             }
         }
+    }
+
+    fun clearBooks() {
+        _uiState.value = UiState.Success(emptyList())
     }
 }
 
