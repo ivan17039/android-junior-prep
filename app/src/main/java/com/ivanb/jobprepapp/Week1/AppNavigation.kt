@@ -39,12 +39,9 @@ fun AppNavigation(onCloseApp: () -> Unit = {}) {
             }
             // --- EKRAN 2: Detalji pojedine knjige ---
             composable("book_detail/{bookIndex}/{fromScreen}") { backStackEntry ->
-                val index = backStackEntry.arguments?.getString("bookIndex")?.toIntOrNull() ?: 0
                 val fromScreen = backStackEntry.arguments?.getString("fromScreen") ?: "unknown"
                 BookDetailScreen(
-                    book = sampleBooks[index],
-                    onBack = { navController.popBackStack() },
-                    fromScreen = fromScreen,
+                    onBack = { navController.popBackStack() }
                 )
             }
             // --- EKRAN 3: O aplikaciji ---
