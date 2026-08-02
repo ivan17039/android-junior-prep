@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivanb.jobprepapp.Week1.Book
 import com.ivanb.jobprepapp.Week1.sampleBooks
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,8 +18,8 @@ sealed class BookDetailUiState {
     data class Success(val book: Book, val fromScreen: String) : BookDetailUiState()
     data class Error(val message: String) : BookDetailUiState()
 }
-
-class BookDetailViewModel(
+@HiltViewModel
+class BookDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val bookIndex: Int = savedStateHandle.get<String>("bookIndex")?.toIntOrNull() ?: 0

@@ -21,12 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ivanb.jobprepapp.Week2.BookListViewModel
-
 @Composable
 fun BookListScreen(
-    viewModel: BookListViewModel = viewModel(),
+    viewModel: BookListViewModel = hiltViewModel(),
     onBookClick: (Book) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,

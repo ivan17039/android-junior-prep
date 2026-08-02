@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ivanb.jobprepapp.BookDetailUiState
 import com.ivanb.jobprepapp.BookDetailViewModel
@@ -24,7 +25,7 @@ import com.ivanb.jobprepapp.Week2.BookListViewModel
 
 @Composable
 fun BookDetailScreen(
-    viewModel: BookDetailViewModel = viewModel(),
+    viewModel: BookDetailViewModel = hiltViewModel(),
     onBack: () -> Unit,
 //    fromScreen: String,
     modifier: Modifier = Modifier

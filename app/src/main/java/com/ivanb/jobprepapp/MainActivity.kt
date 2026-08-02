@@ -1,4 +1,4 @@
-package com.ivanb.jobprepapp.Week1
+package com.ivanb.jobprepapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -22,7 +22,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ivanb.jobprepapp.R
 import com.ivanb.jobprepapp.Week2.RotationDemoScreen
-import com.ivanb.jobprepapp.Week2.BookListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 // Stanja ekrana radi lakše navigacije
 enum class Screen {
@@ -51,7 +50,10 @@ enum class Screen {
     ROTATION_DEMO
 }
 
-class MainActivity : ComponentActivity() {
+
+
+@AndroidEntryPoint
+class MainActivity : androidx.activity.ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -69,7 +71,9 @@ class MainActivity : ComponentActivity() {
                 }
                 Screen.APP_NAVIGATION -> {
                     // Pretpostavka je da AppNavigation već postoji u tvom projektu
-                    AppNavigation(onCloseApp = { currentScreen = Screen.HOME })
+                    _root_ide_package_.com.ivanb.jobprepapp.Week1.AppNavigation(onCloseApp = {
+                        currentScreen = Screen.HOME
+                    })
                 }
                 Screen.ROTATION_DEMO -> {
                     // Ekran s prikazom razlike ViewModel vs remember pri rotaciji
