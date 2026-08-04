@@ -10,5 +10,6 @@ data class SearchResponse(
 data class OpenLibraryBookDto(
     val title: String,
     @SerializedName("author_name") val authorName: List<String>?,
-    @SerializedName("first_publish_year") val firstPublishYear: Int?
+    @SerializedName("first_publish_year") val firstPublishYear: Int?,
+    @SerializedName("cover_i") val coverId: Int?
 )
