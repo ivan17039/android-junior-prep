@@ -61,5 +61,7 @@ dependencies {
     implementation("androidx.hilt:hilt-lifecycle-viewmodel-compose:1.3.0")
     implementation("com.google.dagger:hilt-android:2.57.1")
     ksp("com.google.dagger:hilt-android-compiler:2.57.1")
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 
 }
