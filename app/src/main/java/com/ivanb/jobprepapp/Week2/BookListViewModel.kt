@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivanb.jobprepapp.BookRepository
 import com.ivanb.jobprepapp.Week1.Book
 import com.ivanb.jobprepapp.Week1.UiState
 import com.ivanb.jobprepapp.Week1.sampleBooks
@@ -18,7 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class BookListViewModel @Inject constructor() : ViewModel() {
+class BookListViewModel @Inject constructor(private val repository: BookRepository) : ViewModel() {
 
 //    private val _books = MutableStateFlow<List<Book>>(emptyList())
 //
@@ -64,10 +65,4 @@ class BookListViewModel @Inject constructor() : ViewModel() {
     fun clearBooks() {
         _uiState.value = UiState.Success(emptyList())
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BookListViewModelPreview() {
-    BookListViewModel()
 }
