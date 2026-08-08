@@ -41,7 +41,6 @@ class BookListViewModel @Inject constructor(private val repository: BookReposito
 //        _books.value = emptyList()
 //    }
 
-    private val simulateError = false // promijeni na true da testiraš Error stanje
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -53,11 +52,11 @@ class BookListViewModel @Inject constructor(private val repository: BookReposito
     fun loadBooks() {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
-            delay(1000)
-            if (simulateError) {
-                _uiState.value = UiState.Error("Nema internetske veze")
-            } else {
-                _uiState.value = UiState.Success(sampleBooks)
+            try {
+                val books = repository.searchBooks("science fiction")
+                _uiState.value = UiState.Success(books)
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error("Greška: ${e.message}")
             }
         }
     }

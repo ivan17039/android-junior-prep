@@ -20,7 +20,8 @@ sealed class BookDetailUiState {
 }
 @HiltViewModel
 class BookDetailViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val repository: BookRepository
 ) : ViewModel() {
     private val bookIndex: Int = savedStateHandle.get<String>("bookIndex")?.toIntOrNull() ?: 0
     private val fromScreen: String = savedStateHandle.get<String>("fromScreen") ?: "unknown"
@@ -29,8 +30,8 @@ class BookDetailViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            delay(500) // simulacija dohvaćanja
-            val book = sampleBooks.getOrNull(bookIndex)
+            val books = repository.searchBooks("science fiction")
+            val book = books.getOrNull(bookIndex)
             _uiState.value = if (book != null) {
                 BookDetailUiState.Success(book = book, fromScreen = fromScreen)
             } else {
