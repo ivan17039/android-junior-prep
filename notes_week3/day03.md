@@ -1,4 +1,4 @@
----
+
 
 # Bilješke i Zadaci
 
@@ -33,7 +33,11 @@ Ovo stoji u **`BookRepository`**-ju jer Repository uzme sirove DTO podatke s mre
 
 ## Zadaci
 1.**Promjena pretrage:** Promijeni `"fantasy"` u neki drugi upit (npr. `"science fiction"` ili ime tvog omiljenog autora) — pokreni i provjeri da se prikažu drugačiji rezultati. 
+
 <img src="./screenshots/day03_Search_results_custom_query.png" width="250" alt="Rezultati pretrage">
+
 2.**Testiranje Loading stanja:** Usporen internet (ili isključivanje pa uključivanje Wi-Fi/mobilnih podataka dok se app pokreće) prirodno produži Loading fazu — provjeri da spinner ostane vidljiv dulje.
+
 3.**Testiranje Error stanja:** Isključi internet prije pokretanja aplikacije i pokreni je — trebao bi se vidjeti Error stanje s porukom (zahvaljujući `try/catch` bloku). Ovo je uvod u ono što se detaljnije obrađuje 6. dana.
+
 <img src="./screenshots/day03_Error_state_no_internet.png" width="250" alt="Greška bez interneta">
