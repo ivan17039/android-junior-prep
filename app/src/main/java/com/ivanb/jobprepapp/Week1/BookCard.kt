@@ -29,7 +29,7 @@ fun BookCard(
             contentDescription = book.title,
             placeholder = painterResource(R.drawable.ic_launcher_foreground),
             error = painterResource(R.drawable.ic_launcher_foreground),
-            modifier = Modifier.size(60.dp)
+
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column {
