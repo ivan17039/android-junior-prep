@@ -16,6 +16,7 @@ private fun OpenLibraryBookDto.toBook(): Book {
     return Book(
         title = title,
         author = authorName?.firstOrNull() ?: "Nepoznat autor",
-        year = firstPublishYear ?: 0
+        year = firstPublishYear ?: 0,
+        coverUrl = coverId?.let { "https://covers.openlibrary.org/b/id/$it-M.jpg" } // ako coverId postoji, izgradi URL; ako je null, coverUrl ostaje nul
     )
 }
