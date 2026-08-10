@@ -47,8 +47,29 @@ class BookListViewModel @Inject constructor(private val repository: BookReposito
 
     init {
         loadBooks()
+        observeBooks()
+        refreshBooks()
+    }
+    private fun observeBooks() {
+        viewModelScope.launch {
+            repository.books.collect { books ->
+                if (books.isNotEmpty()) {
+                    _uiState.value = UiState.Success(books)
+                }
+            }
+        }
     }
 
+    private fun refreshBooks() {
+        viewModelScope.launch {
+            try {
+                repository.refreshBooks("fantasy")
+            } catch (e: Exception) {
+                // ako Room već ima podatke od prije, i dalje se prikazuju (vidi observeBooks)
+                // detaljniji error handling (UiState.Error) dolazi Dan 6
+            }
+        }
+    }
     fun loadBooks() {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
