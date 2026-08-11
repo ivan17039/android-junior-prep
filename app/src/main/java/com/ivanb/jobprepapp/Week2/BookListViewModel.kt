@@ -16,10 +16,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
+import retrofit2.HttpException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
-class BookListViewModel @Inject constructor(private val repository: BookRepository) : ViewModel() {
+class BookListViewModel @Inject constructor(
+    private val repository: BookRepository
+) : ViewModel() {
 
 //    private val _books = MutableStateFlow<List<Book>>(emptyList())
 //
@@ -46,7 +51,7 @@ class BookListViewModel @Inject constructor(private val repository: BookReposito
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     init {
-        loadBooks()
+        // loadBooks()
         observeBooks()
         refreshBooks()
     }
@@ -60,27 +65,39 @@ class BookListViewModel @Inject constructor(private val repository: BookReposito
         }
     }
 
-    private fun refreshBooks() {
+    fun refreshBooks() {
         viewModelScope.launch {
             try {
-                repository.refreshBooks("fantasy")
+                repository.refreshBooks("science fiction")
             } catch (e: Exception) {
-                // ako Room već ima podatke od prije, i dalje se prikazuju (vidi observeBooks)
-                // detaljniji error handling (UiState.Error) dolazi Dan 6
+                // Prikaži grešku SAMO ako Room nema ništa za ponuditi -
+                // inače bi pregazili dobar cache samo zato što je refresh pukao
+                if (_uiState.value !is UiState.Success) { // provjerava trenutno stanje prije nego prepiše u Error
+                    _uiState.value = UiState.Error(mapErrorMessage(e))
+                }
             }
         }
     }
-    fun loadBooks() {
-        viewModelScope.launch {
-            _uiState.value = UiState.Loading
-            try {
-                val books = repository.searchBooks("science fiction")
-                _uiState.value = UiState.Success(books)
-            } catch (e: Exception) {
-                _uiState.value = UiState.Error("Greška: ${e.message}")
-            }
+    private fun mapErrorMessage(e: Exception): String {
+        return when (e) {
+            is UnknownHostException -> "Nema internetske veze. Provjeri vezu i pokušaj ponovno."
+            is SocketTimeoutException -> "Server ne odgovara. Pokušaj ponovno za koji trenutak."
+            is HttpException -> "Greška servera (${e.code()}). Pokušaj kasnije."
+            else -> "Nešto je pošlo po zlu: ${e.message}"
         }
     }
+    // direktno sa interneta
+//    fun loadBooks() {
+//        viewModelScope.launch {
+//            _uiState.value = UiState.Loading
+//            try {
+//                val books = repository.searchBooks("science fiction")
+//                _uiState.value = UiState.Success(books)
+//            } catch (e: Exception) {
+//                _uiState.value = UiState.Error("Greška: ${e.message}")
+//            }
+//        }
+//    }
 
     fun clearBooks() {
         _uiState.value = UiState.Success(emptyList())

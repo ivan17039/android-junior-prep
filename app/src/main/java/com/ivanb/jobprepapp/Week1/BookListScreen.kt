@@ -114,7 +114,7 @@ fun BookListScreen(
             ) {
                 Text("Greška: ${currentState.message}")
                 Spacer(modifier = Modifier.height(8.dp))
-                Button(onClick = { viewModel.loadBooks() }) {
+                Button(onClick = { viewModel.refreshBooks() }) {
                     Text("Pokušaj ponovno")
                 }
                 Spacer(modifier = Modifier.height(8.dp))
