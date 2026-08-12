@@ -60,7 +60,7 @@ class BookListViewModel @Inject constructor(
             repository.books.collect { books ->
                 if (books.isNotEmpty()) {
                     // Promjena na main grani:
-                    _uiState.value = UiState.Success(books.sortedBy { it.title.uppercase() })
+                    _uiState.value = UiState.Success(books.sortedBy { it.title })
                 }
             }
         }
