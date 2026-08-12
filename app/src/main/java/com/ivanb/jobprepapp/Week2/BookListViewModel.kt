@@ -59,12 +59,11 @@ class BookListViewModel @Inject constructor(
         viewModelScope.launch {
             repository.books.collect { books ->
                 if (books.isNotEmpty()) {
-                    _uiState.value = UiState.Success(books)
+                    _uiState.value = UiState.Success(books.sortedBy { it.title })
                 }
             }
         }
     }
-
     fun refreshBooks() {
         viewModelScope.launch {
             try {
