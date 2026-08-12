@@ -59,7 +59,8 @@ class BookListViewModel @Inject constructor(
         viewModelScope.launch {
             repository.books.collect { books ->
                 if (books.isNotEmpty()) {
-                    _uiState.value = UiState.Success(books.sortedBy { it.title })
+                    // Promjena na main grani:
+                    _uiState.value = UiState.Success(books.sortedBy { it.title.uppercase() })
                 }
             }
         }
