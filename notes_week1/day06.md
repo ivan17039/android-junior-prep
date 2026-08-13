@@ -1,6 +1,3 @@
-
----
-
 # Dan 6 – Refaktoring, čišćenje koda i ViewModel
 
 ## Bilješke (Notes)

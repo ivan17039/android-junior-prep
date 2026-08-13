@@ -1,6 +1,3 @@
-
----
-
 # LazyColumn, remember, state
 
 **state** - vrijednost koja se može promijeniti i na koju UI reagira.

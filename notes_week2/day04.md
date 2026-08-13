@@ -1,6 +1,3 @@
-Evo gotovog primjera s relacijskim putanjama (kakve se najčešće koriste u Markdownu unutar projekta, npr. ako slike spremaš u mapu `screenshots/` ili u isti direktorij s bilješkama):
-
-```markdown
 # UiState Pattern u Praksi (Tjedan 2, Dan 4)
 
 ## Zašto UiState (Loading / Success / Error)?
