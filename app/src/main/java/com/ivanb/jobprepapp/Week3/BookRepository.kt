@@ -27,6 +27,7 @@ class BookRepository @Inject constructor(
 }
 private fun OpenLibraryBookDto.toBook(): Book {
     return Book(
+        id = key,
         title = title,
         author = authorName?.firstOrNull() ?: "Nepoznat autor",
         year = firstPublishYear ?: 0,
@@ -35,9 +36,9 @@ private fun OpenLibraryBookDto.toBook(): Book {
 }
 
 private fun BookEntity.toBook(): Book {
-    return Book(title = title, author = author, year = year, coverUrl = coverUrl)
+    return Book(id=id, title = title, author = author, year = year, coverUrl = coverUrl)
 }
 
 private fun Book.toEntity(): BookEntity {
-    return BookEntity(title = title, author = author, year = year, coverUrl = coverUrl)
+    return BookEntity(id=id, title = title, author = author, year = year, coverUrl = coverUrl)
 }

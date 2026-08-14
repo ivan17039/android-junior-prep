@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.ivanb.jobprepapp.BookRepository
 import com.ivanb.jobprepapp.Week1.Book
 import com.ivanb.jobprepapp.Week1.UiState
-import com.ivanb.jobprepapp.Week1.sampleBooks
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -58,10 +57,11 @@ class BookListViewModel @Inject constructor(
     private fun observeBooks() {
         viewModelScope.launch {
             repository.books.collect { books ->
+                // Ako imamo knjige u bazi, odmah ih prikaži
                 if (books.isNotEmpty()) {
-                    // Promjena na main grani:
                     _uiState.value = UiState.Success(books.sortedBy { it.title })
                 }
+                // Ako je baza prazna, ostavi UiState.Loading (ili obradi prazno stanje u UI-u)
             }
         }
     }

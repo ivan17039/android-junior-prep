@@ -17,4 +17,8 @@ interface BookDao {
 
     @Query("DELETE FROM books")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM books WHERE id = :id")
+    // FIX: Changed parameter type from Int to String to match the BookEntity primary key type.
+    suspend fun getBookById(id: String): BookEntity?
 }

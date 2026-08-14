@@ -6,9 +6,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import kotlinx.coroutines.delay
 
 @Composable
 fun AppNavigation(onCloseApp: () -> Unit = {}) {
@@ -26,8 +29,7 @@ fun AppNavigation(onCloseApp: () -> Unit = {}) {
             composable("book_list") {
                 BookListScreen(
                     onBookClick = { book ->
-                        val index = sampleBooks.indexOf(book)
-                        navController.navigate("book_detail/$index/list")
+                        navController.navigate("book_detail/${book.id}/list")
                     },
                     onAboutClick = {
                         navController.navigate("about")
@@ -38,12 +40,18 @@ fun AppNavigation(onCloseApp: () -> Unit = {}) {
                 )
             }
             // --- EKRAN 2: Detalji pojedine knjige ---
-            composable("book_detail/{bookIndex}/{fromScreen}") { backStackEntry ->
-                val fromScreen = backStackEntry.arguments?.getString("fromScreen") ?: "unknown"
+            composable(
+                route = "book_detail/{bookId}/{fromScreen}",
+                arguments = listOf(
+                    navArgument("bookId") { type = NavType.StringType },
+                    navArgument("fromScreen") { type = NavType.StringType }
+                )
+            ) {
                 BookDetailScreen(
                     onBack = { navController.popBackStack() }
                 )
             }
+
             // --- EKRAN 3: O aplikaciji ---
             composable(route="about"){
                 AboutScreen(

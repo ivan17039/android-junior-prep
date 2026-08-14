@@ -44,5 +44,5 @@ fun BookCard(
 @Preview(showBackground = true)
 @Composable
 fun BookCardPreview() {
-    BookCard(book = Book("Dune", "Frank Herbert", 1965))
+    BookCard(book = Book(id="1","Dune", "Frank Herbert", 1965))
 }

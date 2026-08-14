@@ -8,6 +8,7 @@ data class SearchResponse(
 )
 
 data class OpenLibraryBookDto(
+    val key: String,
     val title: String,
     @SerializedName("author_name") val authorName: List<String>?,
     @SerializedName("first_publish_year") val firstPublishYear: Int?,
