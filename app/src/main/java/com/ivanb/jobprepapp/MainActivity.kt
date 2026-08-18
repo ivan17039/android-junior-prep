@@ -83,7 +83,7 @@ class MainActivity : androidx.activity.ComponentActivity() {
                             Button(onClick = { currentScreen = Screen.HOME }) {
                                 Text("Natrag na glavni ekran")
                             }
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(Spacing.medium))
 
                             // Pozivamo tvoj RotationDemoScreen iz Week2
                             RotationDemoScreen()
@@ -120,7 +120,7 @@ fun MojEkran(
                 color = Color.Gray
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(Spacing.medium))
 
             Text(text = "1. Navigacija na glavnu aplikaciju", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             Text(text = "Klikom na gumb ispod otvara se AppNavigation s listom knjiga.", fontSize = 12.sp)
@@ -198,11 +198,11 @@ fun MojEkran(
             // Stanja
             Text(text = "5. Rad sa stanjem (State & remember)", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             Text(text = "Primjer brojača s mogućnosti uvećavanja i resetiranja:", fontSize = 12.sp)
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(Spacing.small))
             SimpleCounter()
 
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(Spacing.small))
 
             Text(text = "6. Demo očuvanja stanja pri rotaciji (ViewModel vs remember):", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             Text(text = "Prikazuje kako se obično stanje gubi pri rotaciji mobitela, dok ViewModel čuva podatke.", fontSize = 11.sp, color = Color.Gray)
@@ -217,7 +217,7 @@ fun MojEkran(
                 Text("OTVORI ROTATION DEMO ➔", fontWeight = FontWeight.Bold)
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(Spacing.large))
         }
     }
 }
@@ -294,7 +294,7 @@ fun SimpleCounter() {
         Button(onClick = { count++ }) {
             Text("Kliknuto $count puta")
         }
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(Spacing.small))
         Button(onClick = { count = 0 }) {
             Text("Reset")
         }

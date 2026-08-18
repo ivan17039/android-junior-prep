@@ -37,21 +37,21 @@ class BookDetailViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = BookDetailUiState.Loading
 
-            repository.books.collect { books ->
-                if (books.isEmpty()) {
-                    // Dok je baza prazna/osvježava se, ostajemo u Loading stanju
-                    _uiState.value = BookDetailUiState.Loading
+            try {
+                // Take only the first emission from the repository flow
+                val books = repository.books.first()
+
+                val foundBook = books.find { it.id == bookId }
+                if (foundBook != null) {
+                    _uiState.value = BookDetailUiState.Success(
+                        book = foundBook,
+                        fromScreen = fromScreen
+                    )
                 } else {
-                    val foundBook = books.find { it.id == bookId }
-                    if (foundBook != null) {
-                        _uiState.value = BookDetailUiState.Success(
-                            book = foundBook,
-                            fromScreen = fromScreen
-                        )
-                    } else {
-                        _uiState.value = BookDetailUiState.Error("Knjiga nije pronađena.")
-                    }
+                    _uiState.value = BookDetailUiState.Error("Knjiga nije pronađena.")
                 }
+            } catch (e: Exception) {
+                _uiState.value = BookDetailUiState.Error("Greška pri učitavanju: ${e.localizedMessage}")
             }
         }
     }

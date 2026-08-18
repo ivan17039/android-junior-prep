@@ -21,6 +21,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ivanb.jobprepapp.BookDetailUiState
 import com.ivanb.jobprepapp.BookDetailViewModel
+import com.ivanb.jobprepapp.Spacing
 import com.ivanb.jobprepapp.Week2.BookListViewModel
 
 @Composable
@@ -42,7 +43,7 @@ fun BookDetailScreen(
                 Button(onClick = onBack) {
                     Text("Natrag")
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(Spacing.medium))
                 Text(text = currentState.book.title, fontSize = 24.sp, fontWeight = FontWeight.Bold)
                 Text(text = "Autor: ${currentState.book.author}")
                 Text(text = "Godina izdanja: ${currentState.book.year}")

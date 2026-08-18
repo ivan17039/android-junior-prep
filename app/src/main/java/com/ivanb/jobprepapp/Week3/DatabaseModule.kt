@@ -16,13 +16,14 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    // ApplicationContext jer je Room bazi potreban Android Context gdje točno na disku uređaja treba stvoriti ili otvoriti datoteku baze podataka
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
             "book_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(false)
+            .build()
     }
 
     @Provides

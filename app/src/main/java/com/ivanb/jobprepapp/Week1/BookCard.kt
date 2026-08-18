@@ -12,6 +12,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.font.FontWeight
 import coil3.compose.AsyncImage
 import com.ivanb.jobprepapp.R
+import com.ivanb.jobprepapp.Spacing
+
 @Composable
 fun BookCard(
     book: Book,
@@ -31,7 +33,7 @@ fun BookCard(
             error = painterResource(R.drawable.ic_launcher_foreground),
 
         )
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(Spacing.medium))
         Column {
             Text(text = book.title, fontWeight = FontWeight.Bold)
             Text(text = book.author)
