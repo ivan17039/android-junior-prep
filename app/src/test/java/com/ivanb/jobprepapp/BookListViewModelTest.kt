@@ -39,7 +39,7 @@ class BookListViewModelTest {
 
     @Test
     fun `kad repository ima knjige, uiState postaje Success`() = runTest {
-        val testBooks = listOf(Book("Dune", "Frank Herbert", 1965, null))
+        val testBooks = listOf(Book(id = "/works/OL12345W","Dune", "Frank Herbert", 1965, null))
         val mockRepository = mockk<BookRepository>()
         every { mockRepository.books } returns flowOf(testBooks)
         coEvery { mockRepository.refreshBooks(any()) } returns Unit
