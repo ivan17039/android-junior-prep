@@ -49,6 +49,10 @@ class BookListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+    // pamti jel barem jedan refresh ikad uspio
+    // "pretražio sam i stvarno nema ništa"
+    private var hasLoadedOnce = false
+
     init {
         // loadBooks()
         observeBooks()
@@ -58,7 +62,7 @@ class BookListViewModel @Inject constructor(
         viewModelScope.launch {
             repository.books.collect { books ->
                 // Ako imamo knjige u bazi, odmah ih prikaži
-                if (books.isNotEmpty()) {
+                if (books.isNotEmpty() || hasLoadedOnce) {
                     _uiState.value = UiState.Success(books.sortedBy { it.title })
                 }
                 // Ako je baza prazna, ostavi UiState.Loading (ili obradi prazno stanje u UI-u)
@@ -69,6 +73,10 @@ class BookListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repository.refreshBooks("science fiction")
+                hasLoadedOnce = true
+                if (_uiState.value is UiState.Loading) {
+                    _uiState.value = UiState.Success(emptyList())
+                }
             } catch (e: Exception) {
                 // Prikaži grešku SAMO ako Room nema ništa za ponuditi -
                 // inače bi pregazili dobar cache samo zato što je refresh pukao

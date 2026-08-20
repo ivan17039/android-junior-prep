@@ -61,4 +61,16 @@ class BookListViewModelTest {
 
         assertTrue(viewModel.uiState.value is UiState.Error)
     }
+
+    @Test
+    fun `kad pretraga vrati prazan popis, uiState postaje Success s praznom listom`() = runTest {
+        val mockRepository = mockk<BookRepository>()
+        every { mockRepository.books } returns flowOf(emptyList())
+        coEvery { mockRepository.refreshBooks(any()) } returns Unit
+
+        val viewModel = BookListViewModel(mockRepository)
+        advanceUntilIdle()
+
+        assertEquals(UiState.Success(emptyList()), viewModel.uiState.value)
+    }
 }

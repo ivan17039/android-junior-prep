@@ -6,9 +6,11 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import java.net.UnknownHostException
 
 class BookRepositoryTest {
 
@@ -37,5 +39,22 @@ class BookRepositoryTest {
         repository.refreshBooks("dune")
 
         coVerify { mockDao.insertAll(listOf(expectedEntity)) }
+    }
+
+    @Test
+    fun `refreshBooks propagira mrežnu grešku umjesto da je proguta`() = runTest {
+        val mockApiService = mockk<ApiService>()
+        val mockDao = mockk<BookDao>(relaxUnitFun = true)
+        coEvery { mockApiService.searchBooks(any()) } throws UnknownHostException()
+        every { mockDao.getAll() } returns flowOf(emptyList())
+
+        val repository = BookRepository(mockApiService, mockDao)
+        var thrown = false
+        try {
+            repository.refreshBooks("dune")
+        } catch (e: UnknownHostException) {
+            thrown = true
+        }
+        assertTrue(thrown)
     }
 }
