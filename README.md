@@ -1,5 +1,10 @@
 # Book Search App
 
+![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)
+![Room](https://img.shields.io/badge/Room-4285F4?style=for-the-badge&logo=sqlite&logoColor=white)
+
 A modern Android app for searching books via the [Open Library API](https://openlibrary.org/developers/api), built as a hands-on learning project covering the core Android architecture stack: Jetpack Compose, Coroutines/Flow, Hilt, Retrofit, and Room.
 
 ## Screenshots
