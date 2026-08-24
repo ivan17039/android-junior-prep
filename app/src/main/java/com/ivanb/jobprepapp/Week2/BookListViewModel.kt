@@ -51,12 +51,16 @@ class BookListViewModel @Inject constructor(
 
     // pamti jel barem jedan refresh ikad uspio
     // "pretražio sam i stvarno nema ništa"
+
+    // Početno stanje
+    private val _searchQuery = MutableStateFlow("science fiction")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
     private var hasLoadedOnce = false
 
     init {
         // loadBooks()
         observeBooks()
-        refreshBooks()
+        refreshBooks(_searchQuery.value)
     }
     private fun observeBooks() {
         viewModelScope.launch {
@@ -69,10 +73,18 @@ class BookListViewModel @Inject constructor(
             }
         }
     }
-    fun refreshBooks() {
+
+    // Promjena teksta u search traci
+    fun onSearchQueryChanged(newQuery: String) {
+        _searchQuery.value = newQuery
+    }
+
+    fun refreshBooks(query: String = _searchQuery.value) {
+        if (query.isBlank()) return
         viewModelScope.launch {
+            _uiState.value = UiState.Loading
             try {
-                repository.refreshBooks("science fiction")
+                repository.refreshBooks(query)
                 hasLoadedOnce = true
                 if (_uiState.value is UiState.Loading) {
                     _uiState.value = UiState.Success(emptyList())
